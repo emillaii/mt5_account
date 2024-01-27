@@ -3,7 +3,7 @@
 body {
     background-color: #121212; /* Dark background */
     color: #ffffff; /* Light text */
-    font-family: Arial, sans-serif;
+    font-family: 'Courier New', monospace;
 }
 
 #charts {
@@ -38,7 +38,7 @@ body {
 }
 
 .positions-table, .positions-table th, .positions-table td {
-    border: 1px solid #ddd;
+    border: 1px solid #40ff00;
     padding: 8px;
     text-align: left;
 }

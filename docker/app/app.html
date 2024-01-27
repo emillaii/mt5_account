@@ -26,10 +26,10 @@
     </div>
 
     <script>
-        var apiUrl = 'http://192.168.1.40:3000'; // Base URL for API calls
+        var apiUrl = 'http://192.168.1.50:3000'; // Base URL for API calls
 
         var chartInstances = {}; // Object to hold chart instances
-        
+
          var chartOptions = {
             scales: {
                 x: {
@@ -150,7 +150,7 @@
 
                 // Create table header
                 var headerRow = thead.insertRow();
-                var headers = ['Ticket', 'Symbol', 'Volume', 'Open Price', 'Profit'];
+                var headers = ['Ticket', 'Time', 'Symbol', 'Volume', 'Open Price', 'Type', 'Profit'];
                 headers.forEach(headerText => {
                     var cell = headerRow.insertCell();
                     cell.appendChild(document.createTextNode(headerText));
@@ -168,6 +168,17 @@
                             cell.className = position[key] < 0 ? 'profit-negative' : 'profit-positive';
                             // Add to total profit
                             totalProfit += position[key];
+                        } else if (key === 'time') {
+                            var time = new Date(position[key]*1000).toLocaleString('en-HK', {
+                                timeZone: 'Asia/Hong_Kong',
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                second: '2-digit'
+                            });
+                            text = document.createTextNode(time);
                         }
 
                         cell.appendChild(text);
@@ -190,7 +201,7 @@
                 accountSummary.innerHTML = text;
                 container.appendChild(accountSummary);
             })
-      
+
         }
 
 

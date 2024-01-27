@@ -6,11 +6,22 @@ const port = 3000;
 
 const MAX_RECORDS_PER_ACCOUNT = 1000;
 var cache = {}; // For time series plot 
-var positionsCache = {}; // For storing the latest position 
+var positionsCache = {}; // For storing the latest position
+
+const users = {
+    'admin': 'password123' // Example username and password
+};
+
+const tokens = {
+    'admin': 'token12345'
+}
+
 
 app.use(cors());
 // Middleware to parse request bodies
 app.use(bodyParser.urlencoded({ extended: true }));
+// Middleware to parse JSON request bodies
+app.use(bodyParser.json());
 
 // POST endpoint to ingest data
 app.post('/ingest', (req, res) => {
@@ -72,6 +83,21 @@ app.get('/getPosition', (req, res) => {
     }
 
     res.status(200).send({ data: sortedPositionsCache });
+});
+
+// Login API
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+    console.log(req.body);
+    if (users[username] && users[username] === password) {
+        console.log(`User ${username} logged in successfully`);
+        res.status(200).send({
+            token: tokens[username],
+            app: 'app.html'
+        }); // Redirect to index.html on successful login
+    } else {
+        res.status(401).send('Invalid credentials');
+    }
 });
 
 // Start the server
