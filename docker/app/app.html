@@ -206,7 +206,7 @@
 
 
         function fetchAndDisplayPositions() {
-            fetch(apiUrl + '/getPosition')
+            fetch(apiUrl + '/getPosition?token=' + localStorage.getItem('token') + '&username=' + localStorage.getItem('username'))
                 .then(response => response.json())
                 .then(data => {
                     createPositionsTable(data.data);
@@ -218,7 +218,7 @@
         function fetchData() {
             fetchAndDisplayPositions();
 
-            fetch(apiUrl + '/getData')  // Using the base URL variable
+            fetch(apiUrl + '/getData?token=' + localStorage.getItem('token') + '&username=' + localStorage.getItem('username'))
                 .then(response => response.json())
                 .then(data => {
                     Object.keys(data.data).forEach(account => {

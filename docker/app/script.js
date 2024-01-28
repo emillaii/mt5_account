@@ -20,6 +20,7 @@ document.getElementById('loginForm').addEventListener('submit', function (event)
         .then(data => {
             var json = JSON.parse(data);
             localStorage.setItem("token", json.token);
+            localStorage.setItem("username", username);
             window.location.href = json.app;
         })
         .catch(error => {
