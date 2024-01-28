@@ -1,3 +1,3 @@
 #!/bin/bash
 echo "Hello World"
-node server.js & http-server & wait
+node server.js & cd app & http-server & wait
