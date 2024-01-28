@@ -16,7 +16,6 @@ const tokens = {
     'admin': '1786532a-3950-4624-9cd1-7244e3568ea6'
 }
 
-
 app.use(cors());
 // Middleware to parse request bodies
 app.use(bodyParser.urlencoded({ extended: true }));
