@@ -9,11 +9,11 @@ var cache = {}; // For time series plot
 var positionsCache = {}; // For storing the latest position
 
 const users = {
-    'admin': 'password123' // Example username and password
+    'emillai': 'Password123!#@' // Example username and password
 };
 
 const tokens = {
-    'admin': 'token12345'
+    'admin': '1786532a-3950-4624-9cd1-7244e3568ea6'
 }
 
 
@@ -67,12 +67,22 @@ app.post('/positionIngest', (req, res) => {
 });
 
 app.get('/getData', (req, res) => {
+    console.log('Query String:', req.query);
+    var username = req.query.username;
+    var token = req.query.token;
+    if (tokens[username] !== token) {
+        res.status(400).send({ msg: "Wrong Token" });
+    }
     res.status(200).send({ data: cache });
 });
 
 app.get('/getPosition', (req, res) => {
     let sortedPositionsCache = {};
-
+    var username = req.query.username;
+    var token = req.query.token;
+    if (tokens[username] !== token) {
+        res.status(400).send({ msg: "Wrong Token" });
+    } 
     for (let account in positionsCache) {
         if (positionsCache.hasOwnProperty(account)) {
             sortedPositionsCache[account] = positionsCache[account].slice().sort((a, b) => {
