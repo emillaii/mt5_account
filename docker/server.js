@@ -69,28 +69,29 @@ app.get('/getData', (req, res) => {
     console.log('Query String:', req.query);
     var username = req.query.username;
     var token = req.query.token;
-    if (tokens[username] !== token) {
+    if (tokens[username] == token) {
+        res.status(200).send({ data: cache });
+    } else {
         res.status(400).send({ msg: "Wrong Token" });
     }
-    res.status(200).send({ data: cache });
 });
 
 app.get('/getPosition', (req, res) => {
     let sortedPositionsCache = {};
     var username = req.query.username;
     var token = req.query.token;
-    if (tokens[username] !== token) {
-        res.status(400).send({ msg: "Wrong Token" });
-    } 
-    for (let account in positionsCache) {
-        if (positionsCache.hasOwnProperty(account)) {
-            sortedPositionsCache[account] = positionsCache[account].slice().sort((a, b) => {
-                // Assuming 'volume' is a numeric field
-                return b.volume - a.volume; // For descending order
-            });
+    if (tokens[username] == token) {
+        for (let account in positionsCache) {
+            if (positionsCache.hasOwnProperty(account)) {
+                sortedPositionsCache[account] = positionsCache[account].slice().sort((a, b) => {
+                    // Assuming 'volume' is a numeric field
+                    return b.volume - a.volume; // For descending order
+                });
+            }
         }
+    } else {
+        res.status(400).send({ msg: "Wrong Token" });
     }
-
     res.status(200).send({ data: sortedPositionsCache });
 });
 
