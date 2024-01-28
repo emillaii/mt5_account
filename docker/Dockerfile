@@ -20,5 +20,5 @@ EXPOSE 3000
 
 # Define the command to run your app
 COPY start.sh /start.sh
-RUN chmod +x /start.sh
+RUN chmod +x /app/start.sh
 CMD ["./start.sh"]
