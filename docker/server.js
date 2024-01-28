@@ -13,7 +13,7 @@ const users = {
 };
 
 const tokens = {
-    'admin': '1786532a-3950-4624-9cd1-7244e3568ea6'
+    'emillai': '1786532a-3950-4624-9cd1-7244e3568ea6'
 }
 
 app.use(cors());
@@ -69,6 +69,9 @@ app.get('/getData', (req, res) => {
     console.log('Query String:', req.query);
     var username = req.query.username;
     var token = req.query.token;
+    if (username == undefined || token == undefined) {
+        res.status(400).send({ msg: "Wrong Token" });
+    }
     if (tokens[username] == token) {
         res.status(200).send({ data: cache });
     } else {
@@ -80,6 +83,9 @@ app.get('/getPosition', (req, res) => {
     let sortedPositionsCache = {};
     var username = req.query.username;
     var token = req.query.token;
+    if (username == undefined || token == undefined) {
+        res.status(400).send({ msg: "Wrong Token" });
+    }
     if (tokens[username] == token) {
         for (let account in positionsCache) {
             if (positionsCache.hasOwnProperty(account)) {
@@ -89,10 +95,10 @@ app.get('/getPosition', (req, res) => {
                 });
             }
         }
+        res.status(200).send({ data: sortedPositionsCache });
     } else {
         res.status(400).send({ msg: "Wrong Token" });
     }
-    res.status(200).send({ data: sortedPositionsCache });
 });
 
 // Login API
