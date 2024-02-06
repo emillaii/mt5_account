@@ -7,6 +7,7 @@ const port = 3000;
 const MAX_RECORDS_PER_ACCOUNT = 1000;
 var cache = {}; // For time series plot 
 var positionsCache = {}; // For storing the latest position
+var dealsCache = {}; // For storing the deal position
 
 const users = {
     'emillai': 'Password123!#@' // Example username and password
@@ -40,6 +41,10 @@ app.post('/ingest', (req, res) => {
         if (data.position) {
             positionsCache[account] = JSON.parse(data.position);
             delete data.position;
+        }
+        if (data.deals) {
+            dealsCache[account] = JSON.parse(data.deals);
+            delete data.deals;
         }
         if (cache[account].length >= MAX_RECORDS_PER_ACCOUNT) {
             cache[account].shift(); // Remove the oldest record
@@ -100,6 +105,31 @@ app.get('/getPosition', (req, res) => {
             }
         }
         res.status(200).send({ data: sortedPositionsCache });
+    } else {
+        res.status(400).send({ msg: "Wrong Token" });
+    }
+});
+
+app.get('/getDeals', (req, res) => {
+    let sortedDealsCache = {};
+    var username = req.query.username;
+    var token = req.query.token;
+
+    // Check if username or token is null, undefined, or empty
+    if (!username || !token) {
+        return res.status(400).send({ msg: "Username or token missing" });
+    }
+
+    // Proceed if token matches
+    if (tokens[username] === token) {
+        for (let account in dealsCache) {
+            if (dealsCache.hasOwnProperty(account)) {
+                sortedDealsCache[account] = dealsCache[account].slice().sort((a, b) => {
+                    return b.time - a.time; // For descending order
+                });
+            }
+        }
+        res.status(200).send({ data: sortedDealsCache });
     } else {
         res.status(400).send({ msg: "Wrong Token" });
     }
