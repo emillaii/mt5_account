@@ -47,6 +47,45 @@ button {
     cursor: pointer;
 }
 
-    button:hover {
-        background-color: #45a049;
+button:hover {
+    background-color: #45a049;
+}
+
+#addSymbolForm {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#symbolInput {
+    padding: 10px;
+    margin-right: 8px;
+    font-size: 16px;
+    border: 2px solid #ddd; /* Light grey border */
+    border-radius: 4px; /* Rounded corners for the input field */
+    outline: none; /* Removes the default focus outline */
+}
+
+    #symbolInput:focus {
+        border-color: #4CAF50; /* Changes border color to green when focused */
+    }
+
+#addSymbolButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    border: none;
+    border-radius: 4px; /* Rounded corners for the button */
+    cursor: pointer; /* Changes cursor to pointer on hover */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+    #addSymbolButton:hover {
+        background-color: #45a049; /* Darker green on hover */
+    }
+
+    /* Optional: Add styles for hover and focus states for better user experience */
+    #addSymbolButton:focus {
+        outline: none; /* Removes the default focus outline */
+        box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.5); /* Adds a subtle focus effect */
     }

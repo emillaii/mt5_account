@@ -19,10 +19,15 @@
 </head>
 <body>
     <div id="contentContainer">
-        <audio id="profitAlertSound" src="assets/mixkit-bell-notification-933.wav" type="audio/mp3"></audio>
         <button id="playSoundButton">Play Sound</button>
         <div id="positionTableContainer"></div>
+        <div id="localTimeDisplay"></div>
         <div id="charts" class="chart-container"></div>
+        <div id="addSymbolForm">
+            <input type="text" id="symbolInput" placeholder="e.g., EURUSD|1D">
+            <button type="button" id="addSymbolButton">Add Symbol</button>
+        </div>
+        <div id="tvView"></div>
     </div>
     <script src="app.js"></script>
 </body>

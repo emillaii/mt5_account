@@ -9,13 +9,7 @@ var cache = {}; // For time series plot
 var positionsCache = {}; // For storing the latest position
 var dealsCache = {}; // For storing the deal position
 
-const users = {
-    'emillai': 'Password123!#@' // Example username and password
-};
-
-const tokens = {
-    'emillai': '1786532a-3950-4624-9cd1-7244e3568ea6'
-}
+const { users, tokens } = require('./config');
 
 app.use(cors());
 // Middleware to parse request bodies
@@ -152,5 +146,5 @@ app.post('/login', (req, res) => {
 
 // Start the server
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+    console.log(`Server is running on port ${port}, available users: ${users}`);
 });
