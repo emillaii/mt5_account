@@ -1,5 +1,5 @@
 
-let apiUrl = 'http://192.168.1.50:3000'; // Base URL for API calls
+let apiUrl = 'http://18.162.207.88:3000'; // Base URL for API calls
 
 var chartInstances = {}; // Object to hold chart instances
 

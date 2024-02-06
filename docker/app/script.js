@@ -3,7 +3,7 @@ document.getElementById('loginForm').addEventListener('submit', function (event)
     var username = document.getElementById('username').value;
     var password = document.getElementById('password').value;
 
-    fetch('http://192.168.1.50:3000/login', {
+    fetch('http://18.162.207.88:3000/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
