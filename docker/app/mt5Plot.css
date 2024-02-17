@@ -59,6 +59,7 @@ body {
     text-align: center;
     padding: 10px;
     font-weight: bold;
+    font-size: 30px;
 }
 
 #localTimeDisplay {
@@ -110,3 +111,26 @@ body {
         outline: none; /* Removes the default focus outline */
         box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.5); /* Adds a subtle focus effect */
     }
+
+/* Styles for the summary position table */
+.positions-summary-table {
+    border-collapse: collapse;
+    margin-top: 20px; /* Add some space above the table */
+}
+
+.positions-summary-table th,
+.positions-summary-table td {
+    border: 1px solid #ddd; /* Light grey border for cells */
+    padding: 8px; /* Padding inside cells for content spacing */
+    text-align: left; /* Align text to the left */
+}
+
+.positions-summary-table th {
+    background-color: #f2f2f2; /* Light grey background for headers */
+}
+
+.account-partition {
+    border: 1px solid cyan; /* Cyan border */
+    padding: 20px; /* Padding around the content */
+    margin-bottom: 20px; /* Space between each account's partition */
+}

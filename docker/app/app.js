@@ -172,82 +172,122 @@ function updateOrCreateChart(accountName, accountData, dealsData) {
     }
 }
 
-
 function createPositionsTable(positionsData) {
     var container = document.getElementById('positionTableContainer');
     container.innerHTML = ''; // Clear previous content
 
-    var accountSummaryArray = [];
-
     for (var account in positionsData) {
-        // Initialize total profit for the account
         var totalProfit = 0;
+        var positionSummaryHashMap = {};
+
+        // Create a partition div for each account
+        var partitionDiv = document.createElement('div');
+        partitionDiv.className = 'account-partition';
 
         var header = document.createElement('h3');
+        header.className = 'header';
         header.innerHTML = account;
+        partitionDiv.appendChild(header); // Append to partition div
 
-        var accountSummary = document.createElement('h4'); // Smaller than h3 for subheading
+        var accountSummary = document.createElement('h2');
+        accountSummary.className = totalProfit < 0 ? 'profit-negative' : 'profit-positive';
 
         var table = document.createElement('table');
-        table.className = 'positions-table'; // For CSS styling
+        table.className = 'positions-table';
         var thead = table.createTHead();
         var tbody = document.createElement('tbody');
+        table.appendChild(tbody);
 
-        // Create table header
         var headerRow = thead.insertRow();
         var headers = ['Ticket', 'Time', 'Symbol', 'Volume', 'Open Price', 'Type', 'Profit'];
         headers.forEach(headerText => {
             var cell = headerRow.insertCell();
             cell.appendChild(document.createTextNode(headerText));
         });
+        table.appendChild(thead); // Ensure thead is appended to the table
 
-        // Create table body
         positionsData[account].forEach(position => {
             var row = tbody.insertRow();
+
             for (var key in position) {
                 var cell = row.insertCell();
                 var text = document.createTextNode(position[key]);
 
-                // Check if the cell is for 'profit' and apply color based on value
                 if (key === 'profit') {
                     cell.className = position[key] < 0 ? 'profit-negative' : 'profit-positive';
-                    // Add to total profit
                     totalProfit += position[key];
                 } else if (key === 'time') {
-                    var time = new Date(position[key]*1000).toLocaleString('en-HK', {
-                        timeZone: 'Asia/Hong_Kong',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit'
-                    });
+                    var time = new Date(position[key] * 1000).toLocaleString('en-HK');
                     text = document.createTextNode(time);
                 }
 
                 cell.appendChild(text);
+
+                if (key === 'symbol' || key === 'type' || key === 'volume' || key === 'profit') {
+                    let summaryKey = `${position['symbol']}-${position['type']}`;
+                    if (!positionSummaryHashMap[summaryKey]) {
+                        positionSummaryHashMap[summaryKey] = { volume: 0, profit: 0 };
+                    }
+                    if (key === 'volume') {
+                        positionSummaryHashMap[summaryKey].volume += parseFloat(position[key]);
+                    }
+                    if (key === 'profit') {
+                        positionSummaryHashMap[summaryKey].profit += parseFloat(position[key]);
+                    }
+                }
             }
         });
 
-        accountSummaryArray.push('Total Profit for ' + account + ': ' + totalProfit.toFixed(2));
+        Object.keys(positionSummaryHashMap).forEach(key => {
+            positionSummaryHashMap[key].volume = parseFloat(positionSummaryHashMap[key].volume.toFixed(2));
+            positionSummaryHashMap[key].profit = parseFloat(positionSummaryHashMap[key].profit.toFixed(2));
+        });
 
-        // Set the total profit in the account summary
         accountSummary.innerHTML = 'Total Profit for ' + account + ': ' + totalProfit.toFixed(2);
-        accountSummary.className = totalProfit < 0 ? 'profit-negative' : 'profit-positive';
 
-        table.appendChild(tbody);
-        container.appendChild(header);
-        container.appendChild(accountSummary);
-        container.appendChild(table);
+        partitionDiv.appendChild(table); // Append table to partition div
+
+        // Create and append the summary table for this account with the new column
+        var summaryHeader = document.createElement('h2');
+        summaryHeader.innerHTML = 'Summary for ' + account;
+        summaryHeader.className = 'summary-header';
+        partitionDiv.appendChild(summaryHeader); // Append to partition div
+
+        var summaryTable = document.createElement('table');
+        summaryTable.className = 'positions-summary-table';
+        var summaryThead = summaryTable.createTHead();
+        var summaryTbody = document.createElement('tbody');
+        summaryTable.appendChild(summaryTbody);
+
+        var summaryHeaderRow = summaryThead.insertRow();
+        var summaryHeaders = ['Symbol-Type', 'Total Volume', 'Total Profit'];
+        summaryHeaders.forEach(headerText => {
+            var cell = summaryHeaderRow.insertCell();
+            cell.appendChild(document.createTextNode(headerText));
+        });
+        summaryTable.appendChild(summaryThead); // Ensure thead is appended to the summary table
+
+        Object.entries(positionSummaryHashMap).forEach(([key, { volume, profit }]) => {
+            var row = summaryTbody.insertRow();
+            var symbolTypeCell = row.insertCell();
+            symbolTypeCell.appendChild(document.createTextNode(key));
+
+            var volumeCell = row.insertCell();
+            volumeCell.appendChild(document.createTextNode(volume));
+
+            var profitCell = row.insertCell();
+            profitCell.appendChild(document.createTextNode(profit));
+            profitCell.className = profit < 0 ? 'profit-negative' : 'profit-positive';
+        });
+
+        partitionDiv.appendChild(accountSummary); // Append summary to partition div
+        partitionDiv.appendChild(summaryTable); // Append summary table to partition div
+
+        container.appendChild(partitionDiv); // Finally, append the partition div to the container
     }
-    accountSummaryArray.forEach(text => {
-        var accountSummary = document.createElement('h4');
-        accountSummary.innerHTML = text;
-        container.appendChild(accountSummary);
-    })
-
 }
+
+
 
 
 function fetchAndDisplayPositions() {
@@ -311,7 +351,9 @@ document.addEventListener('DOMContentLoaded', function () {
         ["XAUUSD", "XAUUSD|1D"],
         ["GBPUSD", "GBPUSD|1D"],
         ["EURUSD", "EURUSD|1D"],
+        ["AUDUSD", "AUDUSD|1D"],
         ["EURNZD", "EURNZD|1D"],
+        ["SOLUSD", "SOLUSD|1D"]
     ];
 
     // Function to update the TradingView widget with new symbols
