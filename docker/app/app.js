@@ -325,11 +325,6 @@ function fetchData() {
 fetchData();
 setInterval(fetchData, 10000); // Refresh every 10 seconds
 
-document.getElementById('playSoundButton').addEventListener('click', function() {
-    var alertSound = document.getElementById('profitAlertSound');
-    alertSound.play();
-});
-
 document.addEventListener('DOMContentLoaded', function () {
     function updateLocalTime() {
         const now = new Date();
