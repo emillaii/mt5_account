@@ -335,12 +335,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Update time display every second
     setInterval(updateLocalTime, 1000);
 
-    // Optionally, handle the play sound button
-    document.getElementById('playSoundButton').addEventListener('click', function () {
-        var alertSound = document.getElementById('profitAlertSound');
-        alertSound.play();
-    });
-
     //tvView
     var symbols = [ // Initial set of symbols
         ["XAUUSD", "XAUUSD|1D"],
