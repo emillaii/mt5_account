@@ -210,6 +210,7 @@ app.post('/deals', (req, res) => {
 
 app.post('/iot', (req, res) => {
     var data = req.body;
+    console.log('Headers:', req.headers);
     console.log(data);
     res.status(200).send('Data received successfully');
 });
