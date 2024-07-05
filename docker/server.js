@@ -208,6 +208,12 @@ app.post('/deals', (req, res) => {
     res.status(200).send('Data received successfully');
 });
 
+app.post('/iot', (req, res) => {
+    var data = req.body;
+    console.log(data);
+    res.status(200).send('Data received successfully');
+});
+
 app.get('/deals', (req, res) => {
     var data = req.body;
     let account = data.account;
