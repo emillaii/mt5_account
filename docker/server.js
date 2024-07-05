@@ -5,7 +5,7 @@ const cors = require("cors");
 const app = express();
 const port = 3000;
 
-const MAX_RECORDS_PER_ACCOUNT = 1000;
+const MAX_RECORDS_PER_ACCOUNT = 3000;
 var cache = {}; // For time series plot 
 var positionsCache = {}; // For storing the latest position
 var dealsCache = {}; // For storing the deal position
